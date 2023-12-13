@@ -15,7 +15,7 @@ def getActivityNames(activities):
 def getActivityDetails(activities):
     string = ""
     for activity in activities:
-        string += f"\t- Activity name: {activity.name}, Time Spent: {activity.hours} hours.\n"
+        string += f"\t- Activity name: {activity.name}, {activity.action} {activity.result}.\n"
     return string
 
 def activityWithName(name):
@@ -26,9 +26,10 @@ def activityWithName(name):
 class Activity():
     def __init__(self, name):
         self.name = name
-        self.hours = 0
-    def addHours(self, hours):
-        self.hours += hours
+        self.action = ""
+        self.result = 0
+    def addToResult(self, result):
+        self.result += result
 
 def initializeActivities(dataPath):
 
@@ -54,6 +55,7 @@ def initializeActivities(dataPath):
                             if row[0] not in getActivityNames(activities):
                                 # Create activity and add to list
                                 newActivity = Activity(row[0])
+                                newActivity.action = row[-2]
                                 activities.append(newActivity)
 
                         rowInd += 1
@@ -78,7 +80,7 @@ def addUpStats(dataPath):
                         # Check if activity exists in activities
                         if row[0] in getActivityNames(activities):
                             # add the hours to the activity
-                            activityWithName(row[0]).addHours(float(row[-1]))
+                            activityWithName(row[0]).addToResult(float(row[-1]))
 
 if __name__ == "__main__":
 
